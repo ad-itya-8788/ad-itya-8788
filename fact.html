@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Calculator</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f7f7f7;
+            font-family: Arial, sans-serif;
+        }
+        #calculator {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+        h2 {
+            color: #333;
+        }
+        #result {
+            margin-top: 20px;
+        }
+        .btn-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        #Ans {
+            font-size: 18px;
+            color: #444;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f1f1f1;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="calculator">
+    <h2>Number Calculator</h2>
+    <input type="number" id="num" class="form-control mb-3" placeholder="Enter a number">
+
+    <div class="btn-grid">
+        <button onclick="calculateFactorial()" class="btn btn-custom">Factorial</button>
+        <button onclick="checkPrime()" class="btn btn-custom">Prime</button>
+        <button onclick="checkPerfect()" class="btn btn-custom">Perfect</button>
+        <button onclick="checkArmstrong()" class="btn btn-custom">Armstrong</button>
+        <button onclick="checkEvenOdd()" class="btn btn-custom">Even/Odd</button>
+        <button onclick="checkPosNeg()" class="btn btn-custom">Positive/Negative</button>
+        <button onclick="checkPalindrome()" class="btn btn-custom">Palindrome</button>
+        <button onclick="printTable()" class="btn btn-custom">Print Table</button>
+    </div>
+
+    <div id="result">
+        <h3>Result:</h3>
+        <p id="Ans"></p>
+    </div>
+</div>
+
+<script>
+    function calculateFactorial() {
+        let x = parseInt(document.getElementById("num").value);
+        if (isNaN(x) || x < 0) {
+            document.getElementById("Ans").innerHTML = "Enter a valid positive integer";
+            return;
+        }
+        let fact = 1;
+        for (let i = 1; i <= x; i++) {
+            fact *= i;
+        }
+        document.getElementById("Ans").innerHTML = `Factorial is ${fact}`;
+    }
+
+    function checkPrime() {
+        let x = parseInt(document.getElementById("num").value);
+        if (isNaN(x) || x < 2) {
+            document.getElementById("Ans").innerHTML = `${x} is not a prime number`;
+            return;
+        }
+        let isPrime = true;
+        for (let i = 2; i <= Math.sqrt(x); i++) {
+            if (x % i === 0) {
+                isPrime = false;
+                break;
+            }
+        }
+        document.getElementById("Ans").innerHTML = isPrime ? `${x} is a prime number` : `${x} is not a prime number`;
+    }
+
+    function checkPerfect() {
+        let x = parseInt(document.getElementById("num").value);
+        if (isNaN(x) || x <= 0) {
+            document.getElementById("Ans").innerHTML = "Enter a positive integer";
+            return;
+        }
+        let sum = 0;
+        for (let i = 1; i < x; i++) {
+            if (x % i === 0) sum += i;
+        }
+        document.getElementById("Ans").innerHTML = (sum === x) ? `${x} is a perfect number` : `${x} is not a perfect number`;
+    }
+
+    function checkArmstrong() {
+        let x = parseInt(document.getElementById("num").value);
+        if (isNaN(x)) {
+            document.getElementByElementById("Ans").innerHTML = "Enter a valid integer";
+            return;
+        }
+        let sum = 0, temp = x;
+        while (temp > 0) {
+            let digit = temp % 10;
+            sum += digit ** 3;
+            temp = Math.floor(temp / 10);
+        }
+        document.getElementById("Ans").innerHTML = (sum === x) ? `${x} is an Armstrong number` : `${x} is not an Armstrong number`;
+    }
+
+    function checkEvenOdd() {
+        let x = parseInt(document.getElementById("num").value);
+        if (isNaN(x)) {
+            document.getElementById("Ans").innerHTML = "Enter a valid integer";
+            return;
+        }
+        document.getElementById("Ans").innerHTML = (x % 2 === 0) ? `${x} is even` : `${x} is odd`;
+    }
+
+    function checkPosNeg() {
+        let x = parseInt(document.getElementById("num").value);
+        if (isNaN(x)) {
+            document.getElementById("Ans").innerHTML = "Enter a valid integer";
+            return;
+        }
+        document.getElementById("Ans").innerHTML = x > 0 ? `${x} is positive` : x < 0 ? `${x} is negative` : `${x} is zero`;
+    }
+
+    function checkPalindrome() {
+        let x = document.getElementById("num").value;
+        if (x === "") {
+            document.getElementById("Ans").innerHTML = "Enter a valid integer";
+            return;
+        }
+        let reversed = x.split("").reverse().join("");
+        document.getElementById("Ans").innerHTML = (x === reversed) ? `${x} is a palindrome` : `${x} is not a palindrome`;
+    }
+
+    function printTable() {
+        let x = parseInt(document.getElementById("num").value);
+        if (isNaN(x)) {
+            document.getElementById("Ans").innerHTML = "Enter a valid integer";
+            return;
+        }
+        let table = `<strong>Table of ${x}:</strong><br>`;
+        for (let i = 1; i <= 10; i++) {
+            table += `${x} x ${i} = ${x * i}<br>`;
+        }
+        document.getElementById("Ans").innerHTML = table;
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tic-Tac-Toe Game</title>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+            
+        }
+      
+        .board {
+            justify-content: center;
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            gap: 5px;    
+            margin: 10px;
+            padding: 20px;
+            border: 3px solid rgb(26, 23, 23);
+        }
+        
+        .cell {
+            width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            border: 2px solid #333;
+            cursor: pointer;
+        }
+       
+        p {
+            text-align: center;
+            font-size: large;
+            padding: 6px;
+        }
+        
+        h1 {
+            text-align: center;
+            font-size: 60px;
+        }
+        
+        .cell:hover {
+            background-color: #333;
+        }
+        
+        .head {
+            background-color: black;
+            height: 60px;
+            width: 100%;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .foot {
+            background-color: black;
+            height: 30px;
+            color: white;
+            margin-top: 10px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .cell.blink {
+        animation: blink 1s infinite;
+    }
+    
+    @keyframes blink {
+        0%
+        {
+            color:white;
+            background-color: black;
+        }
+        100%
+        {
+            color:rgb(19, 18, 18);
+            background-color: rgb(204, 193, 193); 
+        }
+    }
+    </style>
+</head>
+<body>
+    <header class="head">
+        <h1>TIC-TAC</h1>
+    </header>
+    
+    <div class="board" id="board">
+        <div class="cell" id="cell-0"></div>
+        <div class="cell" id="cell-1"></div>
+        <div class="cell" id="cell-2"></div>
+        <div class="cell" id="cell-3"></div>
+        <div class="cell" id="cell-4"></div>
+        <div class="cell" id="cell-5"></div>
+        <div class="cell" id="cell-6"></div>
+        <div class="cell" id="cell-7"></div>
+        <div class="cell" id="cell-8"></div>
+    </div>
+    
+    <script>
+        let player = 'X'; 
+        let board = ['', '', '', '', '', '', '', '', '']; 
+    
+        function clickcell(index) {
+            if (board[index] === '' && !checkwin()) {
+                board[index] = player;
+                const cell = document.getElementById('cell-' + index);
+                cell.innerHTML = player;
+    
+                if (player === 'X') {
+                    cell.style.backgroundColor = 'lightblue';
+                } else {
+                    cell.style.backgroundColor = 'lightgreen';
+                }
+    
+                if (checkwin()) {
+                    document.querySelector("h1").innerHTML = `Winner is ${player}`;
+                    highlightWin();
+                    setTimeout(() => location.reload(), 2000); 
+                } else if (checktie()) {
+                    alert('It\'s a tie!');
+                    setTimeout(() => location.reload(), 2000); 
+                } else {
+                    player = player === 'X' ? 'O' : 'X'; 
+                }
+            }
+        }
+    
+        function checkwin() {
+            const wins = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], 
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6] 
+            ];
+    
+            for (let combo of wins) {
+                const [a, b, c] = combo;
+                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                    return combo;
+                }
+            }
+            return false;
+        }
+    
+        function checktie() {
+            return board.every(cell => cell !== '');
+        }
+    
+        function highlightWin() {
+            const winningCombo = checkwin();
+            if (winningCombo) {
+                for (let index of winningCombo) {
+                    const cell = document.getElementById('cell-' + index);
+                    cell.classList.add('blink');
+                }
+            }
+        }
+    
+        for (let i = 0; i < 9; i++) {
+            document.getElementById('cell-' + i).addEventListener('click', function() {
+                clickcell(i);
+            });
+        }
+    </script>
+      
+    <footer class="foot"><p>&copy; Made by Aditya Chavan</p></footer>
+</body>
+</html>
